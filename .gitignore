@@ -68,3 +68,5 @@ Thumbs.db
 # Project Specific
 /instance/ # Local database and logs
 *.pdf      # Generated PDF documents
+TO_DO.md   # Project roadmap
+vim_cheatsheet.md # Vim quick reference

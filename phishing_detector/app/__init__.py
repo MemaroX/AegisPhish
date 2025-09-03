@@ -2,13 +2,19 @@ import logging
 from logging.handlers import RotatingFileHandler
 import os
 from flask import Flask
+from .extensions import db , migrate
 
 def create_app():
     """Create and configure an instance of the Flask application."""
     app = Flask(__name__, instance_relative_config=True)
+# We start the configuration here -----------
+    app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(app.instance_path, 'aegis.db')}"
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    
 
     # --- Logging Configuration ---
-    # Ensure the instance folder exists
+
+    #Ensure the instance folder exists
     try:
         os.makedirs(app.instance_path)
     except OSError:
@@ -32,7 +38,10 @@ def create_app():
     app.logger.setLevel(logging.INFO)
     app.logger.info('AegisPhish system startup')
     # --- End of Logging Configuration ---
-
+    db.init_app(app)
+    migrate.init_app(app,db)
+    from . import models
+    # -- Routes --
     @app.route('/')
     def index():
         app.logger.info('Root endpoint was reached.')

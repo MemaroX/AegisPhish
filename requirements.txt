@@ -7,3 +7,5 @@ requests
 beautifulsoup4
 python-magic
 lxml
+Flask-SQLAlchemy
+Flask-Migrate

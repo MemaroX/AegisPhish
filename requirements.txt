@@ -1,0 +1,9 @@
+scikit-learn
+pandas
+numpy
+flask
+email-validator
+requests
+beautifulsoup4
+python-magic
+lxml

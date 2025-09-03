@@ -43,7 +43,7 @@ coverage/
 # MyPy
 .mypy_cache/
 .dmypy.json
-dmypy.json
+dmy.json
 
 # Jupyter Notebook
 .ipynb_checkpoints
@@ -84,3 +84,6 @@ vim_cheatsheet.md # Vim quick reference
 *.tar.gz
 *.tar.bz2
 *.tar.xz
+
+# Data files
+*.csv

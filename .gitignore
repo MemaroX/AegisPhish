@@ -31,3 +31,6 @@ instance/
 htmlcov/
 
 
+
+.gemini/
+gha-creds-*.json

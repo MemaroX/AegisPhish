@@ -1,13 +1,46 @@
+import logging
+from logging.handlers import RotatingFileHandler
+import os
 from flask import Flask
 
-app = Flask(__name__)
-
-@app.route('/')
 def create_app():
-    """Initialize the Flask application. Create and configure the app."""
-    app = Flask(__name__,instance_relative_config=True)
-    
+    """Create and configure an instance of the Flask application."""
+    app = Flask(__name__, instance_relative_config=True)
+
+    # --- Logging Configuration ---
+    # Ensure the instance folder exists
+    try:
+        os.makedirs(app.instance_path)
+    except OSError:
+        pass
+
+    # Handlers for logging to file and console
+    file_handler = RotatingFileHandler(
+        os.path.join(app.instance_path, 'aegis.log'),
+        maxBytes=10240, backupCount=10)
+    file_handler.setFormatter(logging.Formatter(
+        '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(logging.Formatter(
+        '%(asctime)s %(levelname)s: %(message)s'))
+
+    # Add both handlers to the logger
+    app.logger.addHandler(file_handler)
+    app.logger.addHandler(stream_handler)
+
+    app.logger.setLevel(logging.INFO)
+    app.logger.info('AegisPhish system startup')
+    # --- End of Logging Configuration ---
+
+    @app.route('/')
+    def index():
+        app.logger.info('Root endpoint was reached.')
+        return "Welcome to AegisPhish!"
+
     @app.route('/health')
     def health_check():
-        return "AegisPhishDetector system status: Nominal!"
+        app.logger.info('Health check endpoint was reached.')
+        return 'AegisPhish System Status: Nominal.'
+
     return app
